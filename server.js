@@ -11,7 +11,7 @@ var find_unicorn = function (callback) {
             amount = 1;
 
         for(var n = 1; n < amount; n++) {
-            pick = (Math.random() * dict.length - 0.5).toFixed();
+            pick = Math.floor(Math.random() * dict.length);
             choice.push(dict[pick])
         }
         
@@ -45,13 +45,12 @@ var find_unicorn = function (callback) {
             });
 
             response.on('end', function () {
-                var index = (Math.random()*8-0.5).toFixed();
-                console.log(index)
-                results = JSON.parse(data).responseData.results;
-                console.log(resuts.length)
+                var results = JSON.parse(data).responseData.results;
+                var index = Math.floor(Math.random()*results.length);
+                console.log(results.length)
                 console.log(search)
                 
-                result = results[index];
+                var result = results[index];
                 
                 result.search = search;
                 
