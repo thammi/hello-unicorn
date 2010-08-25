@@ -46,12 +46,14 @@ var find_unicorn = function (callback) {
             });
 
             response.on('end', function () {
-                var results = JSON.parse(data).responseData.results;
+                var raw = JSON.parse(data).responseData;
+                var results = raw.results;
                 var index = Math.floor(Math.random()*results.length);
                 
                 var result = results[index];
                 
                 result.search = search;
+                result.moreResultsUrl = raw.cursor.moreResultsUrl
                 
                 cb(result);
             });
@@ -66,7 +68,7 @@ var find_unicorn = function (callback) {
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     find_unicorn(function (a) {
-        res.end('<img src="' + a.tbUrl + '"/><br/><img src="' + a.url + '"/><br>Found on Google with query "'+a.search.join(' ')+'"\n');
+        res.end('<img src="' + a.tbUrl + '"/><br/><img src="' + a.url + '"/><br>Found on Google with query <a href="' + a.moreResultsUrl + '">"'+a.search.join(' ')+'"</a>.<br/>Original <a href="' + a.originalContextUrl + '">here\n');
     });
 }).listen(parseInt(port));
 
