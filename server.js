@@ -15,7 +15,7 @@ var shuffle_picker = function (list) {
 
 var find_unicorn = function (callback) {
     var get_search = function (amount) {
-        var next = shuffle_picker(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad', 'crazy', 'great', 'killing', 'psycho']);
+        var next = shuffle_picker(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad', 'crazy', 'great', 'killing', 'psycho', 'robo']);
         var chosen = ['unicorn'];
 
         amount = amount || 1;
@@ -63,7 +63,6 @@ var find_unicorn = function (callback) {
 
     query_google(get_search(3), callback);
 }
-
 
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html', 'Expires': 0,});
