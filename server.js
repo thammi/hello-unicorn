@@ -17,14 +17,14 @@ var shuffle_pick = function (list) {
 
 var find_unicorn = function (callback) {
     var get_search = function (amount) {
-        var rnrfrun = shuffle_pick(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad']);
-        var chosen = ['unicorn'];
+        var next = shuffle_pick(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad']);
+        var chosen_names = ['unicorn'];
 
         amount = amount || 1;
 
-        while(--amount) chosen.push(remove_next_random_name_from_unicorn_names());
+        while(--amount) chosen_names.push(next());
            
-        return chosen;
+        return chosen_names;
     }
 
     var query_google = function (search, cb) {
