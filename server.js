@@ -15,7 +15,7 @@ var shuffle_picker = function (list) {
 
 var find_unicorn = function (callback) {
     var get_search = function (amount) {
-        var next = shuffle_picker(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad']);
+        var next = shuffle_picker(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad', 'crazy', 'great', 'killing', 'psycho']);
         var chosen = ['unicorn'];
 
         amount = amount || 1;
