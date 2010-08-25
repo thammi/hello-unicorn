@@ -4,7 +4,7 @@ var http = require('http'),
 
 var find_unicorn = function (callback) {
     var get_search = function (amount) {
-        var dict = ['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking'];
+        var dict = ['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad'];
         var choice = ['unicorn'];
         
         if(!amount)
@@ -49,12 +49,17 @@ var find_unicorn = function (callback) {
                 console.log(index)
                 results = JSON.parse(data).responseData.results;
                 console.log(search)
-                cb(results[index]);
+                
+                result = results[index];
+                
+                result.search = search;
+                
+                cb(result);
             });
         });
     }
 
-    var search = get_search(2);
+    var search = get_search(3);
     query_google(search, callback);
 }
 
@@ -62,7 +67,7 @@ var find_unicorn = function (callback) {
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     find_unicorn(function (a) {
-        res.end('<img src="' + a.tbUrl + '"/><br/><img src="' + a.url + '"/>\n');
+        res.end('<img src="' + a.tbUrl + '"/><br/><img src="' + a.url + '"/><br>Found on Google with query '+a.search.join(' ')+'\n');
     });
 }).listen(parseInt(port));
 
