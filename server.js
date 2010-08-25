@@ -48,6 +48,7 @@ var find_unicorn = function (callback) {
                 var index = (Math.random()*8-0.5).toFixed();
                 console.log(index)
                 results = JSON.parse(data).responseData.results;
+                console.log(resuts.length)
                 console.log(search)
                 
                 result = results[index];
