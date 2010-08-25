@@ -23,9 +23,10 @@ var find_unicorn = function (callback) {
         var data = "";
 
         var query = querystring.stringify({
-            q:  search.join(' '),
-            v:  '1.0',
+            q:      search.join(' '),
+            v:      '1.0',
             rsz:    8,
+            safe:   'off',
         });
 
         var server = 'ajax.googleapis.com'
@@ -47,8 +48,6 @@ var find_unicorn = function (callback) {
             response.on('end', function () {
                 var results = JSON.parse(data).responseData.results;
                 var index = Math.floor(Math.random()*results.length);
-                console.log(results.length)
-                console.log(search)
                 
                 var result = results[index];
                 
@@ -67,7 +66,7 @@ var find_unicorn = function (callback) {
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     find_unicorn(function (a) {
-        res.end('<img src="' + a.tbUrl + '"/><br/><img src="' + a.url + '"/><br>Found on Google with query '+a.search.join(' ')+'\n');
+        res.end('<img src="' + a.tbUrl + '"/><br/><img src="' + a.url + '"/><br>Found on Google with query "'+a.search.join(' ')+'"\n');
     });
 }).listen(parseInt(port));
 
