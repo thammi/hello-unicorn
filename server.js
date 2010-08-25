@@ -2,14 +2,12 @@ var http = require('http'),
     querystring = require('querystring'),
     port = process.env.PORT || 8001
 
-var rand = function (x) {return Math.floor(Math.random() * x);};
+var rand = function (x) { return Math.floor(Math.random() * x); };
 
-var rand_pick = function (list) {
-    return list[ rand(list.length) ];
-};
+var rand_pick = function (list) { return list[ rand(list.length) ]; };
 
 // !!! side effect !!!!!!!!!!!!!!1
-var shuffle_pick = function (list) {
+var shuffle_picker = function (list) {
   return function() {
     return list.splice(rand(list.length),1)[0];
   };
@@ -17,20 +15,17 @@ var shuffle_pick = function (list) {
 
 var find_unicorn = function (callback) {
     var get_search = function (amount) {
-        var next = shuffle_pick(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad']);
-        var chosen_names = ['unicorn'];
+        var next = shuffle_picker(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad']);
+        var chosen = ['unicorn'];
 
         amount = amount || 1;
 
-        while(--amount) chosen_names.push(next());
+        while(--amount) chosen.push(next());
            
-        return chosen_names;
+        return chosen;
     }
 
     var query_google = function (search, cb) {
-        // ugly???
-        var data = "";
-
         var query = querystring.stringify({
             q:      search.join(' '),
             v:      '1.0',
@@ -49,10 +44,10 @@ var find_unicorn = function (callback) {
         request.end();
 
         request.on('response', function (response) {
+            var data = "";
+
             response.setEncoding('utf8');
-            response.on('data', function (chunk) {
-                data += chunk;
-            });
+            response.on('data', function (chunk) { data += chunk; });
 
             response.on('end', function () {
                 var raw = JSON.parse(data).responseData;
@@ -66,15 +61,17 @@ var find_unicorn = function (callback) {
         });
     }
 
-    var search = get_search(3);
-    query_google(search, callback);
+    query_google(get_search(3), callback);
 }
 
 
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html', 'Expires': 0,});
     find_unicorn(function (a) {
-        res.end('<img src="' + a.tbUrl + '"/><br/><img src="' + a.url + '"/><br>Found on Google with query <a href="' + a.moreResultsUrl + '">"'+a.search.join(' ')+'"</a>.<br/>Original <a href="' + a.originalContextUrl + '">here\n');
+        res.end('<img src="' + a.tbUrl + '"/><br/><img src="' + a.url +
+            '"/><br>Found on Google with query <a href="' + a.moreResultsUrl +
+            '">"' + a.search.join(' ') + '"</a>.<br/>Original <a href="' +
+            a.originalContextUrl + '">here\n');
     });
 }).listen(parseInt(port));
 
