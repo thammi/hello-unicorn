@@ -2,34 +2,29 @@ var http = require('http'),
     querystring = require('querystring'),
     port = process.env.PORT || 8001
 
-var rand_pick = function(list) {
-    return list[ Math.floor(Math.random() * list.length) ];
+var rand = function (x) {return Math.floor(Math.random() * x);};
+
+var rand_pick = function (list) {
+    return list[ rand(list.length) ];
 };
 
-// var shuffle = function(list){
-// var rem = list
-// return {
-//   ...
-
-var shuffle = function(list) {
-    var dummy = list.slice();
-    var result = [];
-    var i;
-    while(dummy.length) {
-        i = Math.floor(Math.random() * dummy.length);
-        result.push(dummy.splice(i,1)[0]);
-    }
-    return result;
+// !!! side effect !!!!!!!!!!!!!!1
+var shuffle_pick = function (list) {
+  return function() {
+    return list.splice(rand(list.length),1)[0];
+  };
 };
 
 var find_unicorn = function (callback) {
     var get_search = function (amount) {
-        var dict = shuffle(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad']);
+        var rnrfrun = shuffle_pick(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad']);
+        var chosen = ['unicorn'];
 
-        if(!amount)
-            amount = 1;
+        amount = amount || 1;
 
-        return ['unicorn'].concat(dict.slice(0,amount-1));
+        while(--amount) chosen.push(remove_next_random_name_from_unicorn_names());
+           
+        return chosen;
     }
 
     var query_google = function (search, cb) {
@@ -61,10 +56,7 @@ var find_unicorn = function (callback) {
 
             response.on('end', function () {
                 var raw = JSON.parse(data).responseData;
-                //var results = raw.results;
-                //var index = Math.floor(Math.random()*results.length);
-                
-                var result = rand_pick(raw.results);//results[index];
+                var result = rand_pick(raw.results);
                 
                 result.search = search;
                 result.moreResultsUrl = raw.cursor.moreResultsUrl
