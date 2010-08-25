@@ -2,20 +2,34 @@ var http = require('http'),
     querystring = require('querystring'),
     port = process.env.PORT || 8001
 
+var rand_pick = function(list) {
+    return list[ Math.floor(Math.random() * list.length) ];
+};
+
+// var shuffle = function(list){
+// var rem = list
+// return {
+//   ...
+
+var shuffle = function(list) {
+    var dummy = list.slice();
+    var result = [];
+    var i;
+    while(dummy.length) {
+        i = Math.floor(Math.random() * dummy.length);
+        result.push(dummy.splice(i,1)[0]);
+    }
+    return result;
+};
+
 var find_unicorn = function (callback) {
     var get_search = function (amount) {
-        var dict = ['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad'];
-        var choice = ['unicorn'];
-        
+        var dict = shuffle(['nazi', 'holy', 'pink', 'rainbow', 'horny', 'old', 'puking', 'sad']);
+
         if(!amount)
             amount = 1;
 
-        for(var n = 1; n < amount; n++) {
-            pick = Math.floor(Math.random() * dict.length);
-            choice.push(dict[pick])
-        }
-        
-        return choice;
+        return ['unicorn'].concat(dict.slice(0,amount-1));
     }
 
     var query_google = function (search, cb) {
@@ -47,10 +61,10 @@ var find_unicorn = function (callback) {
 
             response.on('end', function () {
                 var raw = JSON.parse(data).responseData;
-                var results = raw.results;
-                var index = Math.floor(Math.random()*results.length);
+                //var results = raw.results;
+                //var index = Math.floor(Math.random()*results.length);
                 
-                var result = results[index];
+                var result = rand_pick(raw.results);//results[index];
                 
                 result.search = search;
                 result.moreResultsUrl = raw.cursor.moreResultsUrl
