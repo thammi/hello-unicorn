@@ -86,10 +86,14 @@ var find_unicorn = function (callback) {
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html', 'Expires': 0,});
     find_unicorn(function (a) {
-        res.end('<img src="' + a.tbUrl + '"/><br/><img src="' + a.url +
-            '"/><br>Found on Google with query <a href="' + a.moreResultsUrl +
-            '">"' + a.search.join(' ') + '"</a>.<br/>Original <a href="' +
-            a.originalContextUrl + '">here\n');
+        var server = "this site";
+        var match = a.originalContextUrl.match(/\w+:\/\/([^\/]+)/);
+
+        if(match) {
+            server = match[1];
+        }
+
+        res.end('<html><head><title>Unicornication</title></head><body><p><img src="' + a.tbUrl + '"/></p><p><img src="' + a.url + '"/><br>Found on Google with query <a href="' + a.moreResultsUrl + '">"' + a.search.join(' ') + '"</a>.</p><p>Original on <a href="' + a.originalContextUrl + '">' + server + '</p></body></html>');
     });
 }).listen(parseInt(port));
 
