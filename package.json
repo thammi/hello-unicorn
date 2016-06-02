@@ -1,0 +1,20 @@
+{
+  "name": "hello-unicorn",
+  "version": "1.0.0",
+  "description": "Unicorns from the internets",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thammi/hello-unicorn.git"
+  },
+  "author": "",
+  "license": "AGPL",
+  "bugs": {
+    "url": "https://github.com/thammi/hello-unicorn/issues"
+  },
+  "homepage": "https://github.com/thammi/hello-unicorn"
+}
